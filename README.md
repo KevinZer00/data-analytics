@@ -96,6 +96,39 @@ The average engagement metrics (app logins, personal training sessions, and grou
 
 ---
 
+### Churn Rate by Age Group
+
+```sql
+SELECT
+ CASE
+  WHEN age >= 18 AND age <= 26 THEN '18-26' 
+  WHEN age >= 27 AND age <= 35 THEN '27-35'
+  WHEN age >= 36 AND age <= 45 THEN '36-45'
+  WHEN age >= 46 AND age <= 55 THEN '46-55'
+  WHEN age >= 56 AND age <= 65 THEN '56-65'
+  WHEN age >= 66 THEN '66+'
+ END AS age_group,
+ COUNT(*) AS total,
+ SUM(CASE WHEN churn = 'Yes' THEN 1 ELSE 0 END) AS churned,
+ ROUND(SUM(CASE WHEN churn = 'Yes' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS churn_rate
+FROM members
+GROUP BY age_group
+ORDER BY age_group DESC
+```
+### Output: 
+| age_group | total | churned | churn_rate |
+|-----------|-------|---------|------------|
+| 66+       | 394   | 156     | 39.59      |
+| 56-65     | 931   | 328     | 35.23      |
+| 46-55     | 994   | 358     | 36.02      |
+| 36-45     | 1007  | 353     | 35.05      |
+| 27-35     | 833   | 293     | 35.17      |
+| 18-26     | 856   | 310     | 36.21      |
+
+### Analysis:
+The age group with the lowest total members is the 66+ group. However, this age group also yielded the highest churn rate. This could potentially be due to the individual's age affecting performance and motivation rather than the gym itself. The rest of the age ranges have similar total number of members as well as churn rates. This could suggest that perhaps younger users (18-26 age range experienced second highest churn rate) may have higher budget constraints, inconsistent routines due to lack of experience, or gym loyalty. The next age groups may experience similar churn rates due to work/life schedules, family time, etc. 
+
+
 
 
 
