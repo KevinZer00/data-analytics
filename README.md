@@ -96,7 +96,7 @@ The average engagement metrics (app logins, personal training sessions, and grou
 
 ---
 
-### Churn Rate by Age Group
+### Churn rate by age group
 
 ```sql
 SELECT
