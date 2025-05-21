@@ -50,7 +50,7 @@ This file contains weekly engagement metrics.
 
 ---
 
-### Total number of members that churned and churn rate per membership type (monthly, quarterly, annually):
+### Churn rate by membership type (monthly, quarterly, annually) 
 
 ```sql
 SELECT 
@@ -78,15 +78,15 @@ The majority of the customers are monthly subscribers. This is also the group th
 ```sql
 SELECT
  churn,
- ROUND(AVG(app_logins), 2) AS avg_app_logins,
- ROUND(AVG(pt_sessions), 2) AS avg_pt_sessions,
- ROUND(AVG(class_count), 2) AS avg_class_count
+ ROUND(AVG(app_logins), 2) AS average_app_logins,
+ ROUND(AVG(pt_sessions), 2) AS average_pt_sessions,
+ ROUND(AVG(class_count), 2) AS average_class_count
 FROM members
 JOIN engagement ON members.member_id = engagement.member_id
 GROUP BY churn
 ```
 ### Output:
-| churn | avg_app_logins | avg_pt_sessions | avg_class_count |
+| churn | average_app_logins | average_pt_sessions | average_class_count |
 |-------|----------------|-----------------|-----------------|
 | No    | 3.01           | 0.20            | 1.50            |
 | Yes   | 3.01           | 0.20            | 1.51            |
@@ -128,6 +128,36 @@ ORDER BY age_group DESC
 ### Analysis:
 The age group with the lowest total members is the 66+ group. However, this age group also yielded the highest churn rate. This could potentially be due to the individual's age affecting performance and motivation rather than the gym itself. The rest of the age ranges have similar total number of members as well as churn rates. This could suggest that perhaps younger users (18-26 age range experienced second highest churn rate) may have higher budget constraints, inconsistent routines due to lack of experience, or gym loyalty. The next age groups may experience similar churn rates due to work/life schedules, family time, etc. 
 
+### Gym visit frequency vs churn rate
+
+```sql
+WITH visit_frequency AS (
+ SELECT 
+  member_id, 
+  COUNT(*) AS visits_count, 
+  AVG(duration_minutes) AS average_duration
+ FROM visits
+ GROUP BY member_id
+)
+
+SELECT 
+ churn, 
+ ROUND(AVG(visits_count), 2) AS average_visits, 
+ ROUND(AVG(average_duration), 2) AS average_visit_duration
+FROM visit_frequency
+JOIN members ON members.member_id = visit_frequency.member_id
+GROUP BY churn
+
+```
+### Output: 
+
+| churn | average_visits | average_visit_duration |
+|-------|----------------|------------------------|
+| No    | 29.91          | 59.95                  |
+| Yes   | 30.10          | 60.01                  |
+
+### Analysis:
+We see here that the average total visits per user for both churned and unchurned members are roughly the same (less than 1 integer difference), as well as their average visit durations. This suggests that frequency and duration aren't necessarily strong predictors of churn. 
 
 
 
