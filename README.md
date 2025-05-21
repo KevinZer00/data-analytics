@@ -5,7 +5,10 @@ Data Analytics
 
 This project analyzes gym member behavior and churn using synthetic data. The goal is to identify potential trends or patterns that may help explain why some members leave while others stay active.
 
-The data was imported into PostgreSQL and explored using SQL. The analysis focuses on engagement, visit frequency, class attendance, membership type, and satisfaction scores.
+## Tools Used
+- PostgreSQL
+- SQL
+- Tableau
 
 ## Data Overview
 
