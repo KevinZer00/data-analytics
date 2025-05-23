@@ -1,6 +1,3 @@
-# data-analytics
-Data Analytics
-
 # Gym Membership Churn Analysis
 
 This project analyzes gym member behavior and churn using synthetic data. The goal is to identify potential trends or patterns that may help explain why some members leave while others stay active.
